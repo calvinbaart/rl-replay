@@ -1,7 +1,7 @@
 "use strict";
 const Q = require("q");
 const fs = require("fs");
-const BitStream = require('bit-buffer').BitStream;
+const BitStream = require('./bit-buffer/bit-buffer.js').BitStream;
 const PropertyMapper = require("./netstream_property.js");
 const ActorMapper = require("./netstream_actor.js");
 const request = require("request");
