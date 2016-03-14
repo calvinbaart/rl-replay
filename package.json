@@ -9,6 +9,7 @@
     "rocket-league",
     "replay"
   ],
+  "repository": "https://github.com/calvinbaart/rl-replay",
   "author": "Calvin Baart",
   "license": "GPL-3.0",
   "dependencies": {
