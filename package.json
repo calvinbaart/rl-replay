@@ -10,5 +10,10 @@
     "replay"
   ],
   "author": "Calvin Baart",
-  "license": "GPLv3"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "binary-parser": "^1.1.5",
+    "q": "^1.4.1",
+    "request": "^2.69.0"
+  }
 }
