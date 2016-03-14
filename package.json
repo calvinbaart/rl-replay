@@ -1,0 +1,14 @@
+{
+  "name": "rl-replay",
+  "version": "0.1.0",
+  "description": "RocketLeague replay parser for Node.JS",
+  "entry": "replay.js",
+  "keywords": [
+    "rl",
+    "rocketleague",
+    "rocket-league",
+    "replay"
+  ],
+  "author": "Calvin Baart",
+  "license": "GPLv3"
+}
