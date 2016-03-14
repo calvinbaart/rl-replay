@@ -1,64 +1,3 @@
-/*
-{
-    "id": 147,
-    "state": "existing",
-    "flag": false,
-    "typeId": 209,
-    "typeName": "Archetypes.Car.Car_Default",
-    "className": ".Car_TA",
-    "position": {
-        "x": 256,
-        "y": 3840,
-        "z": 44
-    },
-    "rotation": {
-        "x": 0,
-        "y": 192,
-        "z": 0
-    },
-    "properties": {
-        "Engine.Pawn:PlayerReplicationInfo": [
-            true,
-            33
-        ],
-        "TAGame.Car_TA:TeamPaint": {
-            "Team": 1,
-            "TeamColorID": 1,
-            "CustomColorID": 28,
-            "TeamFinishID": 280,
-            "CustomFinishID": 276
-        },
-        "TAGame.RBActor_TA:ReplicatedRBState": {
-            "sleeping": false,
-            "position": {
-                "x": -1102,
-                "y": 4021,
-                "z": 19
-            },
-            "rotation": {
-                "x": 0.9926450392162847,
-                "y": 0.24915311136204107,
-                "z": -0.999664296395764
-            },
-            "linearVelocity": {
-                "x": -9609,
-                "y": -8616,
-                "z": 81
-            },
-            "angularVelocity": {
-                "x": 0,
-                "y": 0,
-                "z": 2350
-            }
-        },
-        "TAGame.Vehicle_TA:ReplicatedThrottle": 251,
-        "TAGame.Vehicle_TA:ReplicatedSteer": 255,
-        "TAGame.Vehicle_TA:bDriving": true,
-        "TAGame.Vehicle_TA:bReplicatedHandbrake": false
-    }
-}
-*/
-
 var Car = function(id){
     this.type = "Car";
     this.id = id;
@@ -100,6 +39,7 @@ var CarComponentBoost = function(id){
     this.type = "CarComponentBoost";
     this.id = id;
     this.car = null;
+    this.boost = 34;
     this.active = false;
 
     this.update = function(frame, actorState){
@@ -117,10 +57,10 @@ var CarComponentBoost = function(id){
             this.active = (actorState.properties["TAGame.CarComponent_TA:ReplicatedActive"] % 2) != 0;
         }
 
-        /*if(this.car != null && this.car.player != null && this.car.player.name == "Calsmurf2904")
+        if(actorState.properties["TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount"] !== undefined)
         {
-            console.log(JSON.stringify(actorState, null, 4));
-        }*/
+            this.boost = Math.ceil(actorState.properties["TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount"] * (100 / 255));
+        }
     };
 };
 

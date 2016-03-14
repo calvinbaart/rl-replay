@@ -1,6 +1,6 @@
 {
   "name": "rl-replay",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "RocketLeague replay parser for Node.JS",
   "main": "replay.js",
   "keywords": [

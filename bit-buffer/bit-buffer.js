@@ -51,42 +51,69 @@ BitView.prototype._setBit = function (offset, on) {
 	}
 };
 
-BitView.prototype.getBits = function (offset, bits, signed) {
+
+var upperPOT = function(v)
+{
+    if(v < 8)
+        v = 8;
+
+    v--;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
+    v++;
+    return v;
+};
+
+BitView.prototype.getBitsUnsigned = function(offset, bits){
 	var available = (this._view.length * 8 - offset);
 
 	if (bits > available) {
 		throw new Error('Cannot get ' + bits + ' bit(s) from offset ' + offset + ', ' + available + ' available');
 	}
 
+    /*
+    8192, 0,0,0,0,0,0,0,0,0,0,0,0,0,1
+    3584, 0,0,0,0,0,0,0,0,0,1,1,1,0,0
+    8236, 0,0,1,1,0,1,0,0,0,0,0,0,0,1
+    */
+
+    var bitsArray = [];
 	var value = 0;
-	for (var i = 0; i < bits;) {
-		var read;
+	for (var i = 0; i < bits;i++)
+    {
+        var b = this._getBit(offset);
+        bitsArray.push(b);
 
-		// Read an entire byte if we can.
-		if ((bits - i) >= 8 && ((offset & 7) === 0)) {
-			value |= (this._view[offset >> 3] << i);
-			read = 8;
-		} else {
-			value |= (this._getBit(offset) << i);
-			read = 1;
-		}
-
-		offset += read;
-		i += read;
+        value |= (b << i);
+		offset++;
 	}
 
-	if (signed) {
-		// If we're not working with a full 32 bits, check the
-		// imaginary MSB for this bit count and convert to a
-		// valid 32-bit signed value if set.
-		if (bits !== 32 && value & (1 << (bits - 1))) {
-			value |= -1 ^ ((1 << bits) - 1);
-		}
+	return value;
+};
 
-		return value;
+BitView.prototype.getBits = function (offset, bits, signed) {
+    var val = this.getBitsUnsigned(offset, bits);
+
+	if (signed)
+    {
+		if (bits !== 32)
+        {
+			val >>>= 0;
+			
+            var length = upperPOT(bits);
+            if((val >> (length - 1)) != 0)
+            {
+                return -((~(val - 1)) & ((1 << length) - 1));
+            }
+		}
+	}else{
+		val >>>= 0;
 	}
 
-	return value >>> 0;
+	return val;
 };
 
 BitView.prototype.setBits = function (offset, value, bits) {
